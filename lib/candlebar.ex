@@ -12,10 +12,32 @@ defmodule Candlebar do
   end
 
   def parse(file) do
-    file
-    |> File.stream!()
-    |> Stream.map(& &1)
-    |> CSV.decode(headers: true)
-    |> Enum.take(3)
+    maior = 0
+    menor = 99_999_999_999_999_999_999
+
+    file =
+      file
+      |> File.stream!()
+      |> Stream.map(& &1)
+      |> CSV.decode!(headers: true)
+
+    # length = Enum.count(file)
+
+    for part <- file do
+      # da erro no 6 caso
+      if(part["low"] < menor) do
+        menor = String.to_float(part["low"])
+        IO.puts(menor)
+      end
+    end
+
+    # Enum.each(0..5, fn number ->
+    # IO.inspect(Enum.at(file, number))
+    # if(String.to_float(Enum.at(file, number)["low"]) < menor) do
+    # menor = String.to_float(Enum.at(file, number)["low"])
+    # end
+    # end)
+
+    IO.puts(menor)
   end
 end
